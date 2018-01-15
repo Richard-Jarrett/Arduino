@@ -1,5 +1,6 @@
 // Richard Jarrett 04/01/2018
-// Initial Version 1.0
+// 1.0 : Initial Version 1.0
+// 1.1 : Updates to run on 3x3 grid
 
 // Date and time functions using a DS1307 RTC connected via I2C and Wire lib
 // Wire Library 1.0.0
@@ -15,7 +16,7 @@
 #endif
 
 // FastLED setup
-#define NUM_LEDS 16
+#define NUM_LEDS 9
 #define DATA_PIN 3
 CRGB leds[NUM_LEDS];
 
@@ -216,10 +217,15 @@ void loop () {
   // Function that takes a number and lights that number of LED's, starting with 0
   // Improvements- Show at the exit of the loop, Variable for corner or zero LED
 void displayNumber(int number){
-  // Flashing LED in corner at same time as any digit
-  leds[12] = CRGB::White;
-  leds[12].fadeLightBy(250);
-  FastLED.show();
+  // Flashing LED in centre for zero
+  
+  if(number == 0) {
+    leds[4] = CRGB::White;
+    leds[4].fadeLightBy(250);
+    FastLED.show();
+  }
+
+  // Displaying digit in LED's
   for(int thisLED = number; thisLED != 0; thisLED = thisLED -1) {
     leds[thisLED - 1] = CHSV((currentH % 256), currentS, currentV);
     currentH++;
